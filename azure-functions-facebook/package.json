@@ -1,0 +1,20 @@
+{
+  "name": "healthyhomes-facebook-functions",
+  "version": "1.0.0",
+  "description": "Facebook review sync and testimonials API for Healthy Homes (standalone Function App)",
+  "main": "index.js",
+  "scripts": {
+    "start": "func start",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "@azure/functions": "^4.5.0",
+    "axios": "^1.19.0"
+  },
+  "devDependencies": {
+    "azure-functions-core-tools": "^4.0.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

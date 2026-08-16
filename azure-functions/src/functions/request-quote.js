@@ -61,7 +61,7 @@ app.http('request-quote', {
       };
 
     } catch (error) {
-      context.log.error('❌ Error processing quote request:', error);
+      context.error('❌ Error processing quote request:', error);
 
       return {
         status: 500,
@@ -109,7 +109,7 @@ async function createZohoProject(quoteData, context) {
     };
 
   } catch (error) {
-    context.log.error('❌ Failed to create Zoho Project:', error);
+    context.error('❌ Failed to create Zoho Project:', error);
 
     return {
       success: false,
@@ -140,7 +140,7 @@ async function sendQuoteConfirmation(quoteData, zohoResult, context) {
     };
 
   } catch (error) {
-    context.log.error('❌ Failed to send quote confirmation:', error);
+    context.error('❌ Failed to send quote confirmation:', error);
     return { success: false, error: error.message };
   }
 }
@@ -162,7 +162,7 @@ async function notifyTeam(quoteData, zohoResult, context) {
     return { success: true };
 
   } catch (error) {
-    context.log.error('❌ Failed to notify team:', error);
+    context.error('❌ Failed to notify team:', error);
     return { success: false, error: error.message };
   }
 }

@@ -1,4 +1,5 @@
 const { app } = require('@azure/functions');
+const axios = require('axios');
 
 const FACEBOOK_GRAPH_VERSION = 'v21.0';
 
@@ -30,21 +31,9 @@ app.http('sync-facebook-reviews', {
             
             context.log('Fetching Facebook reviews from:', reviewsUrl.replace(accessToken, '[TOKEN]'));
             
-            const response = await fetch(reviewsUrl);
-            const data = await response.json();
-            
-            if (!response.ok) {
-                context.log.error('Facebook API error:', data);
-                return {
-                    status: 500,
-                    body: JSON.stringify({
-                        success: false,
-                        message: 'Failed to fetch Facebook reviews',
-                        error: data.error
-                    })
-                };
-            }
-            
+            const response = await axios.get(reviewsUrl);
+            const data = response.data;
+
             // Transform Facebook reviews to testimonial format
             const facebookTestimonials = data.data
                 .filter(review => review.review_text && review.rating >= 4) // Only 4-5 star reviews with text
@@ -75,13 +64,13 @@ app.http('sync-facebook-reviews', {
             };
             
         } catch (error) {
-            context.log.error('Error syncing Facebook reviews:', error);
+            context.error('Error syncing Facebook reviews:', error.response?.data || error.message);
             return {
                 status: 500,
                 body: JSON.stringify({
                     success: false,
                     message: 'Error syncing Facebook reviews',
-                    error: error.message
+                    error: error.response?.data?.error || error.message
                 })
             };
         }
@@ -121,28 +110,12 @@ app.http('post-testimonial-to-facebook', {
                 access_token: accessToken
             };
             
-            const response = await fetch(postUrl, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(postData)
+            const response = await axios.post(postUrl, postData, {
+                headers: { 'Content-Type': 'application/json' }
             });
-            
-            const result = await response.json();
-            
-            if (!response.ok) {
-                context.log.error('Facebook post error:', result);
-                return {
-                    status: 500,
-                    body: JSON.stringify({
-                        success: false,
-                        message: 'Failed to post to Facebook',
-                        error: result.error
-                    })
-                };
-            }
-            
+
+            const result = response.data;
+
             context.log('Successfully posted testimonial to Facebook:', result.id);
             
             return {
@@ -155,13 +128,13 @@ app.http('post-testimonial-to-facebook', {
             };
             
         } catch (error) {
-            context.log.error('Error posting to Facebook:', error);
+            context.error('Error posting to Facebook:', error.response?.data || error.message);
             return {
                 status: 500,
                 body: JSON.stringify({
                     success: false,
                     message: 'Error posting to Facebook',
-                    error: error.message
+                    error: error.response?.data?.error || error.message
                 })
             };
         }

@@ -7,7 +7,7 @@ const Footer = () => {
         <div>
           <div className="text-orange font-extrabold text-xl">Healthy Homes, LLC</div>
           <p className="text-lightGray mt-2">
-            Professional construction and home repair services in Mansfield, New Hampshire.
+            Professional construction and home repair services in Manchester, New Hampshire.
           </p>
         </div>
 

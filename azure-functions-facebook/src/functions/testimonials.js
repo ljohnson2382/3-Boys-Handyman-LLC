@@ -1,4 +1,5 @@
 const { app } = require('@azure/functions');
+const axios = require('axios');
 
 const FACEBOOK_GRAPH_VERSION = 'v21.0';
 
@@ -55,9 +56,9 @@ app.http('testimonials', {
                         context.log('Fetching live Facebook reviews...');
                         const reviewsUrl = `https://graph.facebook.com/${FACEBOOK_GRAPH_VERSION}/${pageId}/ratings?access_token=${accessToken}&fields=review_text,reviewer,rating,created_time&limit=20`;
 
-                        const response = await fetch(reviewsUrl);
-                        if (response.ok) {
-                            const data = await response.json();
+                        const response = await axios.get(reviewsUrl);
+                        if (response.status >= 200 && response.status < 300) {
+                            const data = response.data;
 
                             facebookTestimonials = data.data
                                 .filter(review =>
@@ -77,14 +78,12 @@ app.http('testimonials', {
                                 }));
 
                             context.log(`✅ Loaded ${facebookTestimonials.length} Facebook reviews`);
-                        } else {
-                            context.log.warn('Failed to fetch Facebook reviews:', response.status);
                         }
                     } else {
                         context.log('Facebook credentials not configured');
                     }
                 } catch (fbError) {
-                    context.log.error('Error fetching Facebook reviews:', fbError);
+                    context.error('Error fetching Facebook reviews:', fbError);
                     // Don't fail the request if Facebook is down
                 }
 
@@ -169,7 +168,7 @@ app.http('testimonials', {
             }
 
         } catch (error) {
-            context.log.error('Error in testimonials function:', error);
+            context.error('Error in testimonials function:', error);
 
             return {
                 status: 500,

@@ -33,6 +33,7 @@ jobs:
         id: builddeploy
         env:
           VITE_WEB3FORMS_KEY: ${{ secrets.VITE_WEB3FORMS_KEY }}
+          VITE_FUNCTIONS_API_BASE: https://func-healthyhomes-website-prod.azurewebsites.net
         uses: Azure/static-web-apps-deploy@v1
         with:
           azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_DELIGHTFUL_OCEAN_018F1E70F }}

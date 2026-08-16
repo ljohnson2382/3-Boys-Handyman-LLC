@@ -1,5 +1,9 @@
 import { useState, useEffect } from "react";
 
+// Testimonials/Facebook sync functions run on a standalone Azure Function App, not the
+// Static Web App's own managed API — see azure-functions-facebook/.
+const FUNCTIONS_API_BASE = import.meta.env.VITE_FUNCTIONS_API_BASE || '';
+
 const Testimonials = () => {
   const [testimonials, setTestimonials] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -14,7 +18,7 @@ const Testimonials = () => {
 
   const fetchTestimonials = async () => {
     try {
-      const response = await fetch('/api/testimonials');
+      const response = await fetch(`${FUNCTIONS_API_BASE}/api/testimonials`);
       const data = await response.json();
       if (data.success) {
         setTestimonials(data.testimonials);
@@ -50,7 +54,7 @@ const Testimonials = () => {
     setSubmitStatus(null);
 
     try {
-      const response = await fetch('/api/testimonials', {
+      const response = await fetch(`${FUNCTIONS_API_BASE}/api/testimonials`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

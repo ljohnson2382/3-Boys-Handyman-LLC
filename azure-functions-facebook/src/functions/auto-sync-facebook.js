@@ -1,4 +1,5 @@
 const { app } = require('@azure/functions');
+const axios = require('axios');
 
 const FACEBOOK_GRAPH_VERSION = 'v21.0';
 
@@ -13,7 +14,7 @@ app.timer('auto-sync-facebook', {
             const accessToken = process.env.FACEBOOK_PAGE_ACCESS_TOKEN;
             
             if (!pageId || !accessToken) {
-                context.log.error('❌ Facebook credentials not configured');
+                context.error('❌ Facebook credentials not configured');
                 return;
             }
             
@@ -21,14 +22,9 @@ app.timer('auto-sync-facebook', {
             const reviewsUrl = `https://graph.facebook.com/${FACEBOOK_GRAPH_VERSION}/${pageId}/ratings?access_token=${accessToken}&fields=review_text,reviewer,rating,created_time&limit=50`;
             context.log('📱 Fetching Facebook reviews...');
             
-            const response = await fetch(reviewsUrl);
-            const data = await response.json();
-            
-            if (!response.ok) {
-                context.log.error('❌ Facebook API error:', data);
-                return;
-            }
-            
+            const response = await axios.get(reviewsUrl);
+            const data = response.data;
+
             // Filter for good reviews with text (4-5 stars)
             const goodReviews = data.data
                 .filter(review => 
@@ -68,7 +64,7 @@ app.timer('auto-sync-facebook', {
             };
             
         } catch (error) {
-            context.log.error('❌ Auto-sync failed:', error);
+            context.error('❌ Auto-sync failed:', error.response?.data || error.message);
             return {
                 status: 'error',
                 message: error.message,
