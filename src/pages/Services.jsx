@@ -1,5 +1,41 @@
+import SEO from "../components/SEO";
+
+const SERVICES_JSON_LD = {
+  "@context": "https://schema.org",
+  "@type": "Service",
+  "serviceType": "Home Construction and Repair",
+  "provider": {
+    "@type": "HomeAndConstructionBusiness",
+    "name": "Healthy Homes, LLC"
+  },
+  "areaServed": {
+    "@type": "State",
+    "name": "New Hampshire"
+  },
+  "hasOfferCatalog": {
+    "@type": "OfferCatalog",
+    "name": "Services",
+    "itemListElement": [
+      "Kitchen Remodeling",
+      "Bathroom Renovation",
+      "Flooring Installation",
+      "Deck Construction",
+      "Exterior Repairs"
+    ].map((name) => ({
+      "@type": "Offer",
+      "itemOffered": { "@type": "Service", "name": name }
+    }))
+  }
+};
+
 const Services = () => (
   <div className="min-h-screen bg-lightGray">
+    <SEO
+      title="Our Services"
+      description="Kitchen remodeling, bathroom renovation, flooring installation, deck construction, and exterior repairs — professional home services in Manchester, NH from Healthy Homes, LLC."
+      path="/services"
+      jsonLd={SERVICES_JSON_LD}
+    />
     {/* Hero Section */}
     <div className="relative h-64 md:h-80 bg-midGray overflow-hidden">
       <img 

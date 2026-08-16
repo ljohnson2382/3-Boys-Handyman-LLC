@@ -13,12 +13,12 @@
   "responseOverrides": {
     "404": {
       "rewrite": "/index.html",
-      "statusCode": 200
+      "statusCode": 404
     }
   },
   "navigationFallback": {
     "rewrite": "/index.html",
-    "exclude": ["/images/*.{png,jpg,gif,ico,svg}", "/api/*"]
+    "exclude": ["/images/*.{png,jpg,gif,ico,svg}", "/api/*", "/robots.txt", "/sitemap.xml"]
   },
   "mimeTypes": {
     ".json": "application/json",

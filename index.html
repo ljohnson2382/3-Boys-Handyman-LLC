@@ -3,33 +3,43 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#152437" />
+    <link rel="icon" type="image/svg+xml" href="/images/icons/Logo.svg" />
     <title>Healthy Homes, LLC - Professional craftsmanship and quality service you can trust</title>
-    
+
+    <!--
+      No <meta name="description"> or <link rel="canonical"> here — react-helmet-async
+      (src/components/SEO.jsx) sets per-page versions of both after the app mounts. Adding
+      static ones here too would produce duplicates once Helmet's render lands, since Helmet
+      doesn't remove tags it didn't create. Google executes JS and will see Helmet's tags;
+      the OG/Twitter tags below stay static because link-preview bots (Facebook, Slack,
+      iMessage, etc.) generally don't run JS and only ever see this file's version, regardless
+      of which route was actually shared.
+    -->
+
+
     <!-- Open Graph / Social Media Meta Tags -->
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Healthy Homes, LLC - Professional Home Services" />
     <meta property="og:description" content="Professional construction and home repair services in Manchester, New Hampshire. Expert home services, renovations, and quality craftsmanship you can trust." />
-    <meta property="og:image" content="https://staging.homefixandbuild.org/images/about-hero-exterior-home.jpg" />
+    <meta property="og:image" content="https://homefixandbuild.org/images/about-hero-exterior-home.jpg" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta property="og:image:alt" content="Healthy Homes professional exterior home renovation work" />
-    <meta property="og:url" content="https://staging.homefixandbuild.org" />
+    <meta property="og:url" content="https://homefixandbuild.org" />
     <meta property="og:site_name" content="Healthy Homes, LLC" />
     
     <!-- Twitter Card Meta Tags -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Healthy Homes, LLC - Professional Home Services" />
     <meta name="twitter:description" content="Professional construction and home repair services in Manchester, New Hampshire." />
-    <meta name="twitter:image" content="https://staging.homefixandbuild.org/images/about-hero-exterior-home.jpg" />
+    <meta name="twitter:image" content="https://homefixandbuild.org/images/about-hero-exterior-home.jpg" />
     
     <!-- Additional Meta Tags for Messaging Apps -->
-    <meta property="og:image:secure_url" content="https://staging.homefixandbuild.org/images/about-hero-exterior-home.jpg" />
-    <meta name="image" content="https://staging.homefixandbuild.org/images/about-hero-exterior-home.jpg" />
-    <meta itemprop="image" content="https://staging.homefixandbuild.org/images/about-hero-exterior-home.jpg" />
+    <meta property="og:image:secure_url" content="https://homefixandbuild.org/images/about-hero-exterior-home.jpg" />
+    <meta name="image" content="https://homefixandbuild.org/images/about-hero-exterior-home.jpg" />
+    <meta itemprop="image" content="https://homefixandbuild.org/images/about-hero-exterior-home.jpg" />
     
-    <!-- Standard Meta Tags -->
-    <meta name="description" content="Professional construction and home repair services in Manchester, New Hampshire. Expert home services, renovations, and quality craftsmanship you can trust." />
-    <meta name="keywords" content="home services, construction, home repair, renovation, Manchester NH, New Hampshire, professional services" />
   </head>
   <body>
     <div id="root"></div>

@@ -1,5 +1,12 @@
+import SEO from "../components/SEO";
+
 const About = () => (
   <div className="min-h-screen bg-lightGray">
+    <SEO
+      title="About Us"
+      description="Learn about Healthy Homes, LLC — 15+ years of professional construction and home repair experience serving Manchester, New Hampshire with quality craftsmanship you can trust."
+      path="/about"
+    />
     {/* Hero Section */}
     <div className="relative h-64 md:h-80 bg-midGray overflow-hidden">
       <img 

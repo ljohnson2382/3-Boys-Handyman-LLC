@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import SEO from '../components/SEO';
 
 const images = [
   '/images/carousel-1.jpg',
@@ -22,6 +23,11 @@ export default function Portfolio() {
   return (
     <section className="bg-navy">
       <div className="max-w-6xl mx-auto px-4 md:px-8 py-12 lg:py-16">
+        <SEO
+          title="Project Portfolio"
+          description="Browse completed kitchen, bathroom, deck, and home renovation projects by Healthy Homes, LLC in Manchester, New Hampshire."
+          path="/portfolio"
+        />
         <h1 className="text-3xl font-bold text-orange mb-6">Project Portfolio</h1>
         <p className="text-lg text-lightGray mb-8">A showcase of our completed projects and transformations.</p>
 

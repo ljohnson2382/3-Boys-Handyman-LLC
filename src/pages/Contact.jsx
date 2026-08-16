@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import SEO from '../components/SEO';
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -170,6 +171,11 @@ const Contact = () => {
   
   return (
   <div className="min-h-screen bg-lightGray">
+    <SEO
+      title="Contact Us"
+      description="Get a free quote from Healthy Homes, LLC. Call (857) 207-2145 or send us your project details — professional home services in Manchester, New Hampshire."
+      path="/contact"
+    />
     {/* Hero Section */}
     <div className="relative h-64 md:h-80 bg-midGray overflow-hidden">
       <img 
