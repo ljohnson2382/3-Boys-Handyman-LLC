@@ -1,5 +1,7 @@
 const { app } = require('@azure/functions');
 
+const FACEBOOK_GRAPH_VERSION = 'v21.0';
+
 app.http('testimonials', {
     methods: ['GET', 'POST'],
     authLevel: 'anonymous',
@@ -14,53 +16,53 @@ app.http('testimonials', {
             if (request.method === 'GET') {
                 // GET: Fetch all approved testimonials (including Facebook reviews)
                 context.log('Fetching testimonials including Facebook reviews');
-                
+
                 // Static testimonials
                 const defaultTestimonials = [
-                    { 
-                        quote: "They did an amazing job on my kitchen remodel! Professional, timely, and exceeded expectations.", 
-                        name: "Sarah M.", 
+                    {
+                        quote: "They did an amazing job on my kitchen remodel! Professional, timely, and exceeded expectations.",
+                        name: "Sarah M.",
                         location: "Somerville, MA",
                         source: "Website",
                         approved: true,
-                        id: 1 
+                        id: 1
                     },
-                    { 
-                        quote: "Reliable and skilled — I'll definitely hire them again. Great communication throughout the project.", 
-                        name: "David R.", 
+                    {
+                        quote: "Reliable and skilled — I'll definitely hire them again. Great communication throughout the project.",
+                        name: "David R.",
                         location: "Waltham, MA",
                         source: "Website",
                         approved: true,
-                        id: 2 
+                        id: 2
                     },
-                    { 
-                        quote: "Outstanding deck construction! The team was professional and finished ahead of schedule.", 
-                        name: "Michael K.", 
+                    {
+                        quote: "Outstanding deck construction! The team was professional and finished ahead of schedule.",
+                        name: "Michael K.",
                         location: "Manchester, NH",
                         source: "Website",
                         approved: true,
-                        id: 3 
+                        id: 3
                     }
                 ];
-                
+
                 // Fetch fresh Facebook reviews
                 let facebookTestimonials = [];
                 try {
                     const pageId = process.env.FACEBOOK_PAGE_ID;
                     const accessToken = process.env.FACEBOOK_PAGE_ACCESS_TOKEN;
-                    
+
                     if (pageId && accessToken) {
                         context.log('Fetching live Facebook reviews...');
-                        const reviewsUrl = `https://graph.facebook.com/v18.0/${pageId}/ratings?access_token=${accessToken}&fields=review_text,reviewer,rating,created_time&limit=20`;
-                        
+                        const reviewsUrl = `https://graph.facebook.com/${FACEBOOK_GRAPH_VERSION}/${pageId}/ratings?access_token=${accessToken}&fields=review_text,reviewer,rating,created_time&limit=20`;
+
                         const response = await fetch(reviewsUrl);
                         if (response.ok) {
                             const data = await response.json();
-                            
+
                             facebookTestimonials = data.data
-                                .filter(review => 
-                                    review.review_text && 
-                                    review.review_text.trim().length > 10 && 
+                                .filter(review =>
+                                    review.review_text &&
+                                    review.review_text.trim().length > 10 &&
                                     review.rating >= 4
                                 )
                                 .map(review => ({
@@ -73,28 +75,31 @@ app.http('testimonials', {
                                     submitted: review.created_time,
                                     approved: true
                                 }));
-                                
+
                             context.log(`✅ Loaded ${facebookTestimonials.length} Facebook reviews`);
                         } else {
                             context.log.warn('Failed to fetch Facebook reviews:', response.status);
                         }
+                    } else {
+                        context.log('Facebook credentials not configured');
                     }
                 } catch (fbError) {
                     context.log.error('Error fetching Facebook reviews:', fbError);
                     // Don't fail the request if Facebook is down
                 }
-                
+
                 // Combine all testimonials
-                const storedTestimonials = context.bindings?.testimonials || [];
+                // NOTE: submitted-via-website testimonials are not merged in here — there is
+                // currently no persistence layer (see repo issue tracking this). New submissions
+                // via POST below are validated and logged but not stored anywhere yet.
                 const allTestimonials = [
-                    ...defaultTestimonials, 
-                    ...facebookTestimonials,
-                    ...storedTestimonials.filter(t => t.approved)
+                    ...defaultTestimonials,
+                    ...facebookTestimonials
                 ];
-                
+
                 // Sort by most recent first
                 allTestimonials.sort((a, b) => new Date(b.submitted || 0) - new Date(a.submitted || 0));
-                
+
                 return {
                     status: 200,
                     headers: {
@@ -111,13 +116,13 @@ app.http('testimonials', {
                         }
                     })
                 };
-                
+
             } else if (request.method === 'POST') {
                 // POST: Submit new testimonial
                 context.log('New testimonial submission received');
-                
+
                 const { quote, name, location } = await request.json();
-                
+
                 // Validate required fields
                 if (!quote || !name) {
                     return {
@@ -132,75 +137,23 @@ app.http('testimonials', {
                         })
                     };
                 }
-                
+
                 // Create new testimonial object
                 const newTestimonial = {
-                    id: Date.now(), // Simple ID generation
+                    id: Date.now(),
                     quote: quote.trim(),
                     name: name.trim(),
                     location: location ? location.trim() : '',
+                    source: 'Website',
                     submitted: new Date().toISOString(),
                     approved: false // Requires manual approval
                 };
-                
+
                 context.log('New testimonial:', newTestimonial);
-                
-                // TODO: Store in database (Azure Table Storage, Cosmos DB, etc.)
-                // For now, we'll just log it and send a notification email
-                
-                // Send notification email to admin
-                try {
-                    const adminNotification = `
-New Testimonial Submission - Healthy Homes LLC
 
-Customer: ${newTestimonial.name}
-Location: ${newTestimonial.location}
-Submitted: ${new Date(newTestimonial.submitted).toLocaleString()}
+                // TODO: Store in database (Azure Table Storage, Cosmos DB, etc.) — tracked
+                // separately. Until then, submissions are logged only and not retrievable.
 
-Testimonial:
-"${newTestimonial.quote}"
-
----
-To approve this testimonial, log into your admin panel or contact your developer.
-                    `;
-                    
-                    context.log('Admin notification prepared:', adminNotification);
-                    
-                    // TODO: Send email to admin using Azure Communication Services
-                    // await sendAdminEmail({
-                    //     to: 'info@homefixandbuild.org',
-                    //     subject: 'New Testimonial Awaiting Approval',
-                    //     body: adminNotification
-                    // });
-                } catch (emailError) {
-                    context.log.error('Failed to send admin notification:', emailError);
-                }
-                
-                // Optional: Auto-post approved testimonials to Facebook
-                try {
-                    if (process.env.AUTO_POST_TO_FACEBOOK === 'true' && newTestimonial.approved) {
-                        context.log('Auto-posting testimonial to Facebook...');
-                        
-                        const facebookResponse = await fetch('/api/post-testimonial-to-facebook', {
-                            method: 'POST',
-                            headers: { 
-                                'Content-Type': 'application/json',
-                                'x-functions-key': process.env.FACEBOOK_SYNC_FUNCTION_KEY 
-                            },
-                            body: JSON.stringify({ testimonial: newTestimonial })
-                        });
-                        
-                        if (facebookResponse.ok) {
-                            context.log('Successfully posted to Facebook');
-                        } else {
-                            context.log.warn('Failed to post to Facebook:', await facebookResponse.text());
-                        }
-                    }
-                } catch (facebookError) {
-                    context.log.error('Facebook posting error:', facebookError);
-                    // Don't fail the main request if Facebook posting fails
-                }
-                
                 return {
                     status: 200,
                     headers: {
@@ -214,10 +167,10 @@ To approve this testimonial, log into your admin panel or contact your developer
                     })
                 };
             }
-            
+
         } catch (error) {
             context.log.error('Error in testimonials function:', error);
-            
+
             return {
                 status: 500,
                 headers: {

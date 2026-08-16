@@ -10,15 +10,12 @@ const AdminTestimonials = () => {
     setMessage('');
     
     try {
-      const response = await fetch('/api/sync-facebook-reviews', {
-        headers: {
-          'x-functions-key': process.env.REACT_APP_FACEBOOK_SYNC_KEY
-        }
-      });
-      
+      const response = await fetch('/api/sync-facebook-reviews');
+
       const result = await response.json();
-      
+
       if (result.success) {
+        setPendingTestimonials(result.testimonials || []);
         setMessage(`✅ Successfully synced ${result.testimonials?.length || 0} Facebook reviews`);
       } else {
         setMessage(`❌ Error: ${result.message}`);
@@ -35,8 +32,7 @@ const AdminTestimonials = () => {
       const response = await fetch('/api/post-testimonial-to-facebook', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
-          'x-functions-key': process.env.REACT_APP_FACEBOOK_SYNC_KEY
+          'Content-Type': 'application/json'
         },
         body: JSON.stringify({ testimonial })
       });

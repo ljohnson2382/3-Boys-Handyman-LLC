@@ -344,8 +344,7 @@ const Contact = () => {
                 </div>
                 <div>
                   <h3 className="font-semibold text-navy">Email</h3>
-                  <p className="text-midGray">info@homefixandbuild.org</p>
-                  <p className="text-midGray text-sm">Owner: healthyhomes@homefixandbuild.org</p>
+                  <p className="text-midGray">healthyhomes@homefixandbuild.org</p>
                 </div>
               </div>
               <div className="flex items-start">

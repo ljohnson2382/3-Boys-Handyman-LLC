@@ -1,13 +1,20 @@
 const { app } = require('@azure/functions');
 
+const FACEBOOK_GRAPH_VERSION = 'v21.0';
+
 app.http('sync-facebook-reviews', {
     methods: ['GET', 'POST'],
-    authLevel: 'function', // Requires function key for security
+    // NOTE: authLevel 'function' has no effect here — deployed as a Static Web Apps managed
+    // API, SWA proxies all /api/* requests as anonymous and gates access via
+    // staticwebapp.config.json routes/roles instead of function keys. This endpoint is
+    // currently reachable by anyone; add SWA role-based auth before relying on it for
+    // anything sensitive.
+    authLevel: 'anonymous',
     handler: async (request, context) => {
         try {
             const pageId = process.env.FACEBOOK_PAGE_ID; // Your Facebook Page ID
             const accessToken = process.env.FACEBOOK_PAGE_ACCESS_TOKEN;
-            
+
             if (!pageId || !accessToken) {
                 return {
                     status: 500,
@@ -17,9 +24,9 @@ app.http('sync-facebook-reviews', {
                     })
                 };
             }
-            
+
             // Fetch Facebook reviews
-            const reviewsUrl = `https://graph.facebook.com/v18.0/${pageId}/ratings?access_token=${accessToken}&fields=review_text,reviewer,rating,created_time&limit=50`;
+            const reviewsUrl = `https://graph.facebook.com/${FACEBOOK_GRAPH_VERSION}/${pageId}/ratings?access_token=${accessToken}&fields=review_text,reviewer,rating,created_time&limit=50`;
             
             context.log('Fetching Facebook reviews from:', reviewsUrl.replace(accessToken, '[TOKEN]'));
             
@@ -84,13 +91,16 @@ app.http('sync-facebook-reviews', {
 // Function to post testimonial to Facebook page
 app.http('post-testimonial-to-facebook', {
     methods: ['POST'],
-    authLevel: 'function',
+    // See NOTE above — 'function' authLevel is not enforced under the SWA managed-functions
+    // deployment model. This endpoint can post to the Facebook Page on behalf of anyone who
+    // calls it; add SWA role-based auth before relying on it for anything sensitive.
+    authLevel: 'anonymous',
     handler: async (request, context) => {
         try {
             const { testimonial } = await request.json();
             const pageId = process.env.FACEBOOK_PAGE_ID;
             const accessToken = process.env.FACEBOOK_PAGE_ACCESS_TOKEN;
-            
+
             if (!pageId || !accessToken) {
                 return {
                     status: 500,
@@ -100,12 +110,12 @@ app.http('post-testimonial-to-facebook', {
                     })
                 };
             }
-            
+
             // Create Facebook post content
             const postMessage = `🌟 Amazing feedback from ${testimonial.name}!\n\n"${testimonial.quote}"\n\n${testimonial.location ? `📍 ${testimonial.location}\n\n` : ''}Thank you for trusting Healthy Homes LLC with your project! 🏡✨\n\n#CustomerTestimonial #HealthyHomesLLC #QualityCraftsmanship`;
-            
+
             // Post to Facebook page
-            const postUrl = `https://graph.facebook.com/v18.0/${pageId}/feed`;
+            const postUrl = `https://graph.facebook.com/${FACEBOOK_GRAPH_VERSION}/${pageId}/feed`;
             const postData = {
                 message: postMessage,
                 access_token: accessToken

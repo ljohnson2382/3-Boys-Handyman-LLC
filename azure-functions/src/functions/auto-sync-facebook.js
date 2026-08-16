@@ -1,5 +1,7 @@
 const { app } = require('@azure/functions');
 
+const FACEBOOK_GRAPH_VERSION = 'v21.0';
+
 // Timer trigger that automatically syncs Facebook reviews every 4 hours
 app.timer('auto-sync-facebook', {
     schedule: '0 0 */4 * * *', // Every 4 hours: 12:00 AM, 4:00 AM, 8:00 AM, 12:00 PM, 4:00 PM, 8:00 PM
@@ -16,7 +18,7 @@ app.timer('auto-sync-facebook', {
             }
             
             // Fetch Facebook reviews
-            const reviewsUrl = `https://graph.facebook.com/v18.0/${pageId}/ratings?access_token=${accessToken}&fields=review_text,reviewer,rating,created_time&limit=50`;
+            const reviewsUrl = `https://graph.facebook.com/${FACEBOOK_GRAPH_VERSION}/${pageId}/ratings?access_token=${accessToken}&fields=review_text,reviewer,rating,created_time&limit=50`;
             context.log('📱 Fetching Facebook reviews...');
             
             const response = await fetch(reviewsUrl);
