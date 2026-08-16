@@ -13,6 +13,10 @@ dist
 dist-ssr
 *.local
 
+# Env
+.env
+azure-functions/local.settings.json
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

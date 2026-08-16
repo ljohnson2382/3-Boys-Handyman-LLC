@@ -93,22 +93,6 @@ const Services = () => (
           <div className="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition">
             <div className="w-12 h-12 bg-orange rounded-lg flex items-center justify-center mb-4">
               <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-              </svg>
-            </div>
-            <h3 className="text-xl font-semibold text-navy mb-3">Landscaping Support</h3>
-            <p className="text-midGray mb-4">Enhance your property's curb appeal with professional landscaping services.</p>
-            <ul className="text-sm text-midGray space-y-1">
-              <li>• Garden bed installation</li>
-              <li>• Retaining wall construction</li>
-              <li>• Outdoor lighting installation</li>
-              <li>• Irrigation system setup</li>
-            </ul>
-          </div>
-          
-          <div className="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition">
-            <div className="w-12 h-12 bg-orange rounded-lg flex items-center justify-center mb-4">
-              <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
               </svg>
             </div>
@@ -120,45 +104,6 @@ const Services = () => (
               <li>• Roof repairs and maintenance</li>
               <li>• Gutter installation and cleaning</li>
             </ul>
-          </div>
-        </div>
-      </div>
-
-      {/* Project Planning Section */}
-      <div className="bg-white rounded-lg p-8 shadow-lg mb-16">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
-          <div>
-            <h2 className="text-3xl font-bold text-navy mb-6">Project Planning & Consultation</h2>
-            <p className="text-midGray mb-4 leading-relaxed">
-              Every successful project starts with careful planning. Our team works closely with you 
-              to understand your vision, assess your space, and create a detailed plan that meets 
-              your needs and budget.
-            </p>
-            <ul className="space-y-3 mb-6">
-              <li className="flex items-center text-midGray">
-                <span className="w-2 h-2 bg-orange rounded-full mr-3"></span>
-                Free initial consultation and estimate
-              </li>
-              <li className="flex items-center text-midGray">
-                <span className="w-2 h-2 bg-orange rounded-full mr-3"></span>
-                Detailed project timeline and milestones
-              </li>
-              <li className="flex items-center text-midGray">
-                <span className="w-2 h-2 bg-orange rounded-full mr-3"></span>
-                Transparent pricing with no hidden fees
-              </li>
-              <li className="flex items-center text-midGray">
-                <span className="w-2 h-2 bg-orange rounded-full mr-3"></span>
-                Regular progress updates and communication
-              </li>
-            </ul>
-          </div>
-          <div className="relative">
-            <img 
-              src="/images/services-section-project-plans.jpg" 
-              alt="Project planning and consultation services" 
-              className="w-full h-80 object-cover rounded-lg shadow-lg"
-            />
           </div>
         </div>
       </div>
@@ -176,12 +121,12 @@ const Services = () => (
             <div className="text-midGray text-sm">Safe wiring & fixture installation</div>
           </div>
           <div className="p-4">
-            <div className="text-2xl font-bold text-orange mb-2">Plumbing</div>
-            <div className="text-midGray text-sm">Pipe work & fixture repair</div>
+            <div className="text-2xl font-bold text-orange mb-2">Home Restoration</div>
+            <div className="text-midGray text-sm">Storm, fire & water damage repair</div>
           </div>
           <div className="p-4">
-            <div className="text-2xl font-bold text-orange mb-2">Painting</div>
-            <div className="text-midGray text-sm">Interior & exterior finishes</div>
+            <div className="text-2xl font-bold text-orange mb-2">New Contruction</div>
+            <div className="text-midGray text-sm">Ground-up builds & additions</div>
           </div>
         </div>
       </div>

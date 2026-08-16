@@ -126,16 +126,27 @@ const Contact = () => {
     }
     
     try {
-      const response = await fetch('/api/contact-form', {
+      const response = await fetch('https://api.web3forms.com/submit', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          Accept: 'application/json',
         },
-        body: JSON.stringify(formData)
+        body: JSON.stringify({
+          access_key: import.meta.env.VITE_WEB3FORMS_KEY,
+          subject: `New Quote Request from ${formData.firstName} ${formData.lastName}`,
+          from_name: `${formData.firstName} ${formData.lastName}`,
+          first_name: formData.firstName,
+          last_name: formData.lastName,
+          email: formData.email,
+          phone: formData.phone,
+          service: formData.service,
+          project_details: formData.projectDetails,
+        })
       });
-      
+
       const result = await response.json();
-      
+
       if (result.success) {
         setSubmitStatus('success');
         setFormData({
@@ -272,7 +283,9 @@ const Contact = () => {
                 <option value="Bathroom Renovation">Bathroom Renovation</option>
                 <option value="Deck Construction">Deck Construction</option>
                 <option value="Flooring Installation">Flooring Installation</option>
+                <option value="Home Restoration">Home Restoration</option>
                 <option value="General Repairs">General Repairs</option>
+                <option value="New Construction">New Construction</option>
                 <option value="Other">Other</option>
               </select>
               {errors.service && <p className="mt-1 text-sm text-red-500">{errors.service}</p>}
@@ -332,7 +345,7 @@ const Contact = () => {
                 <div>
                   <h3 className="font-semibold text-navy">Email</h3>
                   <p className="text-midGray">info@homefixandbuild.org</p>
-                  <p className="text-midGray text-sm">Owner: nicky@homefixandbuild.org</p>
+                  <p className="text-midGray text-sm">Owner: healthyhomes@homefixandbuild.org</p>
                 </div>
               </div>
               <div className="flex items-start">
@@ -344,7 +357,7 @@ const Contact = () => {
                 </div>
                 <div>
                   <h3 className="font-semibold text-navy">Address</h3>
-                  <p className="text-midGray">23 Chaney Place<br />Manchester, NH</p>
+                  <p className="text-midGray">23 Cheney Place<br />Manchester, NH</p>
                 </div>
               </div>
             </div>
