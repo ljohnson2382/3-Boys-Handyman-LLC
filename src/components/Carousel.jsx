@@ -19,6 +19,9 @@ export default function Carousel({ images = ['/images/carousel-1.jpg'], interval
             key={src + i}
             src={src}
             alt={`slide-${i}`}
+            loading={i === 0 ? 'eager' : 'lazy'}
+            fetchPriority={i === 0 ? 'high' : 'auto'}
+            decoding="async"
             className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ${i === index ? 'opacity-100' : 'opacity-0'}`}
           />
         ))}

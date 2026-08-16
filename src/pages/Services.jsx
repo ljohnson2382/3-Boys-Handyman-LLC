@@ -38,9 +38,13 @@ const Services = () => (
     />
     {/* Hero Section */}
     <div className="relative h-64 md:h-80 bg-midGray overflow-hidden">
-      <img 
-        src="/images/services-hero-interior-bathroom.jpg" 
-        alt="Professional bathroom renovation services" 
+      <img
+        src="/images/services-hero-interior-bathroom.jpg"
+        alt="Professional bathroom renovation services"
+        loading="eager"
+        fetchPriority="high"
+        width="1920"
+        height="1079"
         className="w-full h-full object-cover opacity-80"
       />
       <div className="absolute inset-0 bg-navy bg-opacity-50 flex items-center justify-center">

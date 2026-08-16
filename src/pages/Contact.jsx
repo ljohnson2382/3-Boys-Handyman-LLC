@@ -178,9 +178,13 @@ const Contact = () => {
     />
     {/* Hero Section */}
     <div className="relative h-64 md:h-80 bg-midGray overflow-hidden">
-      <img 
-        src="/images/contact-hero-exterior-landscaping.jpg" 
-        alt="Professional landscaping and exterior services" 
+      <img
+        src="/images/contact-hero-exterior-landscaping.jpg"
+        alt="Professional landscaping and exterior services"
+        loading="eager"
+        fetchPriority="high"
+        width="1920"
+        height="1282"
         className="w-full h-full object-cover opacity-80"
       />
       <div className="absolute inset-0 bg-navy bg-opacity-50 flex items-center justify-center">
@@ -362,7 +366,7 @@ const Contact = () => {
                 </div>
                 <div>
                   <h3 className="font-semibold text-navy">Address</h3>
-                  <p className="text-midGray">23 Cheney Place<br />Manchester, NH</p>
+                  <p className="text-midGray">23 Cheney Place<br />Manchester, NH 03101</p>
                 </div>
               </div>
             </div>

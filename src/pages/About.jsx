@@ -9,10 +9,14 @@ const About = () => (
     />
     {/* Hero Section */}
     <div className="relative h-64 md:h-80 bg-midGray overflow-hidden">
-      <img 
-        src="/images/about-hero-exterior-home.jpg" 
-        alt="Home exterior renovation" 
+      <img
+        src="/images/about-hero-exterior-home.jpg"
+        alt="Home exterior renovation"
         className="w-full h-full object-cover opacity-80"
+        loading="eager"
+        fetchPriority="high"
+        width="1920"
+        height="1282"
       />
       <div className="absolute inset-0 bg-navy bg-opacity-40 flex items-center justify-center">
         <div className="text-center text-white px-4">
@@ -31,7 +35,7 @@ const About = () => (
           <p className="text-midGray mb-4 leading-relaxed">
             Healthy Homes, LLC was founded on the principle that quality craftsmanship 
             shouldn't be a luxury. We're a family-owned business committed to providing 
-            expert construction and renovation services throughout Mansfield, New Hampshire 
+            expert construction and renovation services throughout Manchester, New Hampshire
             and the surrounding areas.
           </p>
           <p className="text-midGray mb-4 leading-relaxed">
@@ -45,10 +49,14 @@ const About = () => (
           </p>
         </div>
         <div className="relative">
-          <img 
-            src="/images/about-section-interior-kitchen.jpg" 
-            alt="Interior kitchen renovation" 
+          <img
+            src="/images/about-section-interior-kitchen.jpg"
+            alt="Interior kitchen renovation"
             className="w-full h-96 object-cover rounded-lg shadow-lg"
+            loading="lazy"
+            decoding="async"
+            width="1920"
+            height="1280"
           />
         </div>
       </div>

@@ -2,14 +2,10 @@ import { Link } from "react-router-dom";
 import Carousel from './Carousel';
 
 const Hero = () => {
-  // Put an image at /public/images/hero.jpg to use your own background
-  // The gradient ensures it still looks great even without an image
+  // Solid-color overlay only — no /images/hero.jpg exists, and requesting it on
+  // every homepage load was a wasted 404 request.
   const heroStyle = {
-    // lighter overlay using the provided palette mid-gray/navy (#415A77) at reduced opacity
-    backgroundImage:
-      "linear-gradient(rgba(65,90,119,0.45), rgba(65,90,119,0.45)), url('/images/hero.jpg')",
-    backgroundSize: "cover",
-    backgroundPosition: "center",
+    backgroundColor: "rgba(65,90,119,0.45)",
   };
 
   // Only include existing carousel images from /public/images

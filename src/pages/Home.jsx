@@ -17,6 +17,7 @@ const LOCAL_BUSINESS_JSON_LD = {
     "streetAddress": "23 Cheney Place",
     "addressLocality": "Manchester",
     "addressRegion": "NH",
+    "postalCode": "03101",
     "addressCountry": "US"
   },
   "areaServed": {
