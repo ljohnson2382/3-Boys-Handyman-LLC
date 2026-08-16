@@ -1,4 +1,7 @@
 {
+  "globalHeaders": {
+    "X-Robots-Tag": "noindex, nofollow"
+  },
   "routes": [
     {
       "route": "/api/*",
